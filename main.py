@@ -1,3 +1,4 @@
+# Setting up necessary environment
 !python -m pip install pyyaml==5.1
 import sys, os, distutils.core
 !git clone 'https://github.com/facebookresearch/detectron2'
@@ -5,6 +6,7 @@ dist = distutils.core.run_setup("./detectron2/setup.py")
 !python -m pip install {' '.join([f"'{x}'" for x in dist.install_requires])}
 sys.path.insert(0, os.path.abspath('./detectron2'))
 
+# Inspect and report key version information for debugging and ensuring compatibility
 import torch, detectron2
 !nvcc --version
 TORCH_VERSION = ".".join(torch.__version__.split(".")[:2])
@@ -12,6 +14,7 @@ CUDA_VERSION = torch.__version__.split("+")[-1]
 print("torch: ", TORCH_VERSION, "; cuda: ", CUDA_VERSION)
 print("detectron2:", detectron2.__version__)
 
+# Setting up necessary environment for working with detectron2
 import detectron2
 from detectron2.utils.logger import setup_logger
 setup_logger()
@@ -26,6 +29,7 @@ from detectron2.config import get_cfg
 from detectron2.utils.visualizer import Visualizer
 from detectron2.data import MetadataCatalog, DatasetCatalog
 
+# Setup, configure and use model from detectron2 to perform panoptic segmentation on an input image
 cfg = get_cfg()
 cfg.MODEL.DEVICE = 'cpu'
 cfg.merge_from_file(model_zoo.get_config_file("COCO-PanopticSegmentation/panoptic_fpn_R_101_3x.yaml"))
